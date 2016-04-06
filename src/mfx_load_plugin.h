@@ -42,7 +42,7 @@ namespace MFX
         mfxModuleHandle mHmodule;
         CreatePluginPtr_t mCreatePluginPtr;
         msdk_disp_char mPath[MAX_PLUGIN_PATH];
-        
+
     public:
         PluginModule();
         PluginModule(const msdk_disp_char * path);
@@ -63,8 +63,8 @@ namespace MFX
             FactoryRecord () {}
             FactoryRecord(const mfxPluginParam &plgParams,
                           PluginModule &module,
-                          mfxPlugin plugin) 
-                : plgParams(plgParams) 
+                          mfxPlugin plugin)
+                : plgParams(plgParams)
                 , module(module)
                 , plugin(plugin) {
             }
@@ -77,7 +77,7 @@ namespace MFX
         void Close();
         mfxStatus Create(const PluginDescriptionRecord &);
         bool Destroy(const mfxPluginUID &);
-        
+
         ~MFXPluginFactory();
     protected:
         void DestroyPlugin( FactoryRecord & );

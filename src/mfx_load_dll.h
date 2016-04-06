@@ -46,7 +46,7 @@ namespace MFX
     mfxStatus mfx_get_default_plugin_name(msdk_disp_char *pPath, size_t pathSize, eMfxImplType implType);
 
     mfxStatus mfx_get_default_audio_dll_name(msdk_disp_char *pPath, size_t pathSize, eMfxImplType implType);
-    
+
 
     mfxModuleHandle mfx_dll_load(const msdk_disp_char *file_name);
     //increments reference counter

@@ -63,8 +63,8 @@ mfxU32 mfxInterlockedCas32(mfxCriticalSection *pCSection, mfxU32 value_to_exchan
     return _InterlockedCompareExchange(pCSection, value_to_exchange, value_to_compare);
 }
 
-mfxU32 mfxInterlockedXchg32(mfxCriticalSection *pCSection, mfxU32 value)  
-{ 
+mfxU32 mfxInterlockedXchg32(mfxCriticalSection *pCSection, mfxU32 value)
+{
     return _InterlockedExchange(pCSection, value);
 }
 

@@ -91,7 +91,7 @@ mfxStatus SelectImplementationType(const mfxU32 adapterNum, mfxIMPL *pImplInterf
             DISPATCHER_LOG_INFO((("dxvaDevice.InitDXGI1(%d) Failed "), adapterNum ));
             return MFX_ERR_UNSUPPORTED;
         }
-    } 
+    }
     else if (MFX_IMPL_VIA_ANY == *pImplInterface)
     {
         // try the Direct3D 9 device
@@ -190,8 +190,8 @@ mfxStatus MFXLibraryIterator::Init(eMfxImplType implType, mfxIMPL implInterface,
         if (dirSeparator < (path + _MAX_PATH))
         {
             *++dirSeparator = 0;
-        }        
-        
+        }
+
         return InitFolder(implType, implInterface, adapterNum, path);
     }
 
@@ -216,7 +216,7 @@ mfxStatus MFXLibraryIterator::InitRegistry(eMfxImplType implType, mfxIMPL implIn
 
     // set the required library's implementation type
     m_implType = implType;
-    m_implInterface = implInterface != 0 
+    m_implInterface = implInterface != 0
         ? implInterface
         : MFX_IMPL_VIA_ANY;
 
@@ -249,7 +249,7 @@ mfxStatus MFXLibraryIterator::InitFolder(eMfxImplType implType, mfxIMPL implInte
 
      // set the required library's implementation type
      m_implType = implType;
-     m_implInterface = implInterface != 0 
+     m_implInterface = implInterface != 0
          ? implInterface
          : MFX_IMPL_VIA_ANY;
 
@@ -375,7 +375,7 @@ mfxStatus MFXLibraryIterator::SelectDLLVersion(wchar_t *pPath
                     // compare device's and library's IDs
                     if (MFX_LIB_HARDWARE == m_implType)
                     {
-                        if (m_vendorID != vendorID) 
+                        if (m_vendorID != vendorID)
                         {
                             bRes = false;
                             DISPATCHER_LOG_WRN((("%S conflict, actual = 0x%x : required = 0x%x\n"), vendorIDKeyName, m_vendorID, vendorID));
@@ -424,7 +424,7 @@ mfxStatus MFXLibraryIterator::SelectDLLVersion(wchar_t *pPath
                             if ((0 == vendorID) || (0 == deviceID))
                             {
                                 *pImplType = MFX_LIB_SOFTWARE;
-                                
+
                                 DISPATCHER_LOG_INFO((("Library type is MFX_LIB_SOFTWARE\n")));
                             }
                             else

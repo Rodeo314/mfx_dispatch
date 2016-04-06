@@ -78,8 +78,8 @@ bool WinRegKey::Open(HKEY hRootKey, const wchar_t *pSubKey, REGSAM samDesired)
     {
         DISPATCHER_LOG_OPERATION(SetLastError(lRes));
         TRACE_WINREG_ERROR("Opening key \"%s\\%S\" : RegOpenKeyExW()==0x%x\n"
-            , (HKEY_LOCAL_MACHINE == hRootKey) ? ("HKEY_LOCAL_MACHINE") 
-            : (HKEY_CURRENT_USER == hRootKey)  ? ("HKEY_CURRENT_USER") 
+            , (HKEY_LOCAL_MACHINE == hRootKey) ? ("HKEY_LOCAL_MACHINE")
+            : (HKEY_CURRENT_USER == hRootKey)  ? ("HKEY_CURRENT_USER")
             : "UNSUPPORTED_KEY", pSubKey, GetLastError());
         return false;
     }

@@ -147,7 +147,7 @@ mfxStatus MFX_DISP_HANDLE::LoadSelectedDLL(const msdk_disp_char *pPath, eMfxImpl
         DISPATCHER_LOG_BLOCK(("invoking LoadLibrary(%S)\n", MSDK2WIDE(pPath)));
         // load the DLL into the memory
         hModule = MFX::mfx_dll_load(pPath);
-        
+
         if (hModule)
         {
             int i;
@@ -279,7 +279,7 @@ mfxStatus MFX_DISP_HANDLE::LoadSelectedDLL(const msdk_disp_char *pPath, eMfxImpl
         else
         {
             mfxRes = MFXQueryVersion((mfxSession) this, &actualApiVersion);
-            
+
             if (MFX_ERR_NONE != mfxRes)
             {
                 DISPATCHER_LOG_ERROR((("MFXQueryVersion returned: %d, skiped this library\n"), mfxRes))
@@ -310,12 +310,12 @@ mfxStatus MFX_DISP_HANDLE::UnLoadSelectedDLL(void)
     if (session)
     {
         /* check whether it is audio session or video */
-        int tableIndex = eMFXClose; 
+        int tableIndex = eMFXClose;
         mfxFunctionPointer pFunc;
-        if (impl & MFX_IMPL_AUDIO) 
-        { 
+        if (impl & MFX_IMPL_AUDIO)
+        {
             pFunc = callAudioTable[tableIndex];
-        } 
+        }
         else
         {
             pFunc = callTable[tableIndex];

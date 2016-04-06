@@ -43,7 +43,7 @@ File Name: mfx_dxva2_device.h
 #define DXVA2DEVICE_TRACE_OPERATION(expr) expr;
 #else
 #define DXVA2DEVICE_TRACE(expr)
-#define DXVA2DEVICE_TRACE_OPERATION(expr) 
+#define DXVA2DEVICE_TRACE_OPERATION(expr)
 #endif
 
 namespace MFX

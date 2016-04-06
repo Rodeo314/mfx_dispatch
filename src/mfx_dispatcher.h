@@ -166,7 +166,7 @@ struct MFX_DISP_HANDLE
 private:
     // Declare assignment operator and copy constructor to prevent occasional assignment
     MFX_DISP_HANDLE(const MFX_DISP_HANDLE &);
-    MFX_DISP_HANDLE & operator = (const MFX_DISP_HANDLE &);    
+    MFX_DISP_HANDLE & operator = (const MFX_DISP_HANDLE &);
 
 };
 

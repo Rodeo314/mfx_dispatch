@@ -141,7 +141,7 @@ int main(int argc, const char *argv[], bool bUsePrefix)
 
                 break;
             }
-                
+
             // read specified API version
             case 'v':
             case 'V':
@@ -204,7 +204,7 @@ int main(int argc, const char *argv[], bool bUsePrefix)
     DISPATCHER_LOG_INFO(("DISPRESULT: platform=%-5s impl=%-21s ver=%d.%d : %s\n"
         , cPlatform
         , DispatcherLog_GetMFXImplString(impl).c_str()
-        , ver.Major , ver.Minor 
+        , ver.Major , ver.Minor
         , library.GetPath().empty()? "NOT FOUND" : library.GetPath().c_str()));
 
     return 0;

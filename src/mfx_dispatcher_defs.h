@@ -68,7 +68,7 @@ inline std::wstring getWideString(const char * string)
     return std::wstring(string, string + len);
 }
 #else
-    #define MSDK2WIDE(x) x  
+    #define MSDK2WIDE(x) x
 #endif
 
 #endif
