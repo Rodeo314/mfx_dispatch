@@ -34,7 +34,6 @@ File Name: mfx_plugin_cfg_parser.cpp
 #include "mfx_dispatcher_log.h"
 #include <stdlib.h>
 #include <ctype.h>
-#include <cstdio>
 
 const int guidLen = 16;
 
@@ -92,9 +91,9 @@ namespace MFX
 bool parseGUID(const char* src, mfxU8* guid)
 {
     mfxU32 p[guidLen];
-    int res = sscanf(src,
+    int res = sscanf(src, 
         "%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X",
-        p, p + 1, p + 2, p + 3, p + 4, p + 5, p + 6, p + 7,
+        p, p + 1, p + 2, p + 3, p + 4, p + 5, p + 6, p + 7, 
         p + 8, p + 9, p + 10, p + 11, p + 12, p + 13, p + 14, p + 15);
     if (res != guidLen)
         return false;
@@ -164,7 +163,7 @@ bool PluginConfigParser::AdvanceToNextPlugin()
     // advance one line from current section
     if (!fgets(line, MAX_PLUGIN_NAME, cfgFile))
         return false;
-
+    
     fpos_t lastReadLine = sectionStart;
     while (!foundSection && fgets(line, MAX_PLUGIN_NAME, cfgFile))
     {
@@ -172,7 +171,7 @@ bool PluginConfigParser::AdvanceToNextPlugin()
 
         if (*start == '[')
         {
-            // A "[section]" line
+            // A "[section]" line            
             end = FindCharOrComment(start + 1, ']');
             if (*end == ']') {
                 foundSection = true;
@@ -205,11 +204,11 @@ int PluginConfigParser::GetPluginCount()
         return -1;
 
     Rewind();
-
+    
     int counter = 0;
 
-    do
-    {
+    do 
+    { 
         counter++;
     } while (AdvanceToNextPlugin());
 
@@ -258,7 +257,7 @@ bool PluginConfigParser::ParseSingleParameter(const char * name, char * value, P
         return true;
     }
     if (0 == strcmp(name, "Path") ||
-#ifdef LINUX64
+#ifdef LINUX64        
         0 == strcmp(name, "FileName64"))
 #else
         0 == strcmp(name, "FileName32"))
@@ -286,7 +285,7 @@ bool PluginConfigParser::ParseSingleParameter(const char * name, char * value, P
     }
     if (0 == strcmp(name, "PluginVersion"))
     {
-        dst.PluginVersion = atoi(value);
+        dst.PluginVersion = atoi(value);        
         parsedFields |= PARSED_VERSION;
         return true;
     }
@@ -314,11 +313,11 @@ bool PluginConfigParser::ParsePluginParams(PluginDescriptionRecord & dst, mfxU32
     char* name;
     char* value;
     bool error = false;
-
+    
     int parsedHeaders = 0;
     fgetpos(cfgFile, &sectionStart);
 
-    // Scan through file line by line
+    // Scan through file line by line 
     while (fgets(line, MAX_PLUGIN_NAME, cfgFile))
     {
         start = SkipWhitespace(Strip(line));
@@ -365,7 +364,7 @@ bool PluginConfigParser::ParsePluginParams(PluginDescriptionRecord & dst, mfxU32
                 // Valid name[=:]value pair found, call handler
                 ParseSingleParameter(name, value, dst, parsedFields);
             }
-            else if (!error)
+            else if (!error) 
             {
                 // No '=' or ':' found on name[=:]value line
                 error = true;

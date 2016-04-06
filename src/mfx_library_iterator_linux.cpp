@@ -39,10 +39,10 @@ File Name: mfx_library_iterator_linux.cpp
 #include <string.h>
 #include <unistd.h>
 
-#include "mfx_library_iterator.h"
+#include <mfx_library_iterator.h>
 
-#include "mfx_dispatcher.h"
-#include "mfx_dispatcher_log.h"
+#include <mfx_dispatcher.h>
+#include <mfx_dispatcher_log.h>
 
 #define MFX_PCI_DIR "/sys/bus/pci/devices"
 #define MFX_PCI_DISPLAY_CONTROLLER_CLASS 0x03
@@ -50,7 +50,7 @@ File Name: mfx_library_iterator_linux.cpp
 static const char mfx_storage_opt[] = "/opt/intel";
 
 #ifndef __APPLE__
-#if defined(__linux__) && defined(__x86_64__)
+#if defined(LINUX64)
     static const char mfx_folder[] = "mediasdk/lib64";
     static const char mfx_so_hw_base_name[] = "libmfxhw64-p.so";
     static const char mfx_so_sw_base_name[] = "libmfxsw64-p.so";
@@ -61,7 +61,7 @@ static const char mfx_storage_opt[] = "/opt/intel";
 #endif
 
 #else
-#if defined(__x86_64__)
+#if defined(X86_64)
 static const char mfx_folder[] = "mediasdk/lib64";
 static const char mfx_so_hw_base_name[] = "libmfxhw64.dylib";
 static const char mfx_so_sw_base_name[] = "libmfxsw64.dylib";
@@ -91,7 +91,7 @@ static mfxU32 mfx_init_adapters(struct mfx_disp_adapters** p_adapters)
     int entries_num = scandir(MFX_PCI_DIR, &dir_entries, mfx_dir_filter, (fsort)alphasort);
 
     // sizeof(MFX_PCI_DIR) = 20, sizeof(dirent::d_name) <= 256, sizeof("class"|"vendor"|"device") = 6
-    char file_name[300] = {0};
+    char file_name[300] = {};
     // sizeof("0xzzzzzz") = 8
     char str[16] = {0};
     FILE* file = NULL;
@@ -214,7 +214,7 @@ static mfxU32 mfx_list_libraries(const char* path, bool search_hw, struct mfx_li
         if (p_major == p_minor) goto skip;
         ++p_minor;
         if (!(*p_minor)) goto skip;
-
+        
         major = strtoul(p_major, NULL, 10);
         minor = strtoul(p_minor, NULL, 10);
         if ((major <= 0xFFFF) && (minor <= 0xFFFF))
@@ -258,8 +258,8 @@ mfxStatus SelectImplementationType(const mfxU32 adapterNum, mfxIMPL *pImplInterf
     if (adapterNum >= adapters_num)
         return MFX_ERR_UNSUPPORTED;
 
-    if ((*pImplInterface == MFX_IMPL_VIA_D3D9) ||
-        (*pImplInterface == MFX_IMPL_VIA_D3D11) )
+    if ((*pImplInterface != MFX_IMPL_VIA_ANY) &&
+        (*pImplInterface != MFX_IMPL_VIA_VAAPI) )
         return MFX_ERR_UNSUPPORTED;
 
     *pImplInterface = MFX_IMPL_VIA_VAAPI;
@@ -317,8 +317,9 @@ mfxStatus MFXLibraryIterator::Init(eMfxImplType implType, mfxIMPL impl, const mf
         {
             return MFX_ERR_UNSUPPORTED;
         }
-        m_vendorID = m_adapters[adapter_num].vendor_id;
-        m_deviceID = m_adapters[adapter_num].device_id;
+        m_selected_adapter = adapter_num;
+        m_vendorID = m_adapters[m_selected_adapter].vendor_id;
+        m_deviceID = m_adapters[m_selected_adapter].device_id;
     }
     else if (MFX_LIB_SOFTWARE != implType)
     {
@@ -333,10 +334,10 @@ mfxStatus MFXLibraryIterator::Init(eMfxImplType implType, mfxIMPL impl, const mf
     m_implType = implType;
 
     snprintf(m_path, sizeof(m_path)/sizeof(m_path[0]),
-             "%s/%s/%04x/%04x", mfx_storage_opt, mfx_folder, m_vendorID, m_deviceID);
+             "%s/%s", mfx_storage_opt, mfx_folder);
 
     m_libs_num = mfx_list_libraries(m_path, (MFX_LIB_HARDWARE == implType), &m_libs);
-
+    
     if (!m_libs_num)
     {
         Release();
@@ -365,7 +366,7 @@ mfxStatus MFXLibraryIterator::SelectDLLVersion(char *pPath, size_t pathSize,
 
     if (m_lastLibIndex < 0)
         return MFX_ERR_NOT_FOUND;
-
+    
     if (m_libs[m_lastLibIndex].version.Major != minVersion.Major ||
         m_libs[m_lastLibIndex].version.Minor < minVersion.Minor)
     {
@@ -382,9 +383,10 @@ mfxStatus MFXLibraryIterator::SelectDLLVersion(char *pPath, size_t pathSize,
 
 mfxIMPL MFXLibraryIterator::GetImplementationType()
 {
-    mfxIMPL implInterface;
-    MFX::SelectImplementationType(0, &implInterface, NULL, NULL);
-    return implInterface;
+    if (m_selected_adapter < 0 || m_selected_adapter >= m_adapters_num)
+        return MFX_ERR_UNSUPPORTED;
+
+    return MFX_IMPL_VIA_VAAPI;
 }
 
 bool MFXLibraryIterator::GetSubKeyName(msdk_disp_char *subKeyName, size_t length) const

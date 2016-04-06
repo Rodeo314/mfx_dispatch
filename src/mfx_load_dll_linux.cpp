@@ -36,7 +36,7 @@ File Name: mfx_load_dll_linux.cpp
 
 #if !defined(_DEBUG)
 
-#if defined(__linux__) && defined(__x86_64__)
+#if defined(LINUX64)
 const msdk_disp_char * defaultDLLName[2] = {"libmfxhw64.so",
                                             "libmfxsw64.so"};
 const msdk_disp_char * defaultAudioDLLName[2] = {"libmfxaudiosw64.so",
@@ -78,7 +78,7 @@ const msdk_disp_char * defaultPluginDLLName[2] = {"libmfxplugin32_hw.so",
 
 #else // defined(_DEBUG)
 
-#if defined(__linux__) && defined(__x86_64__)
+#if defined(LINUX64)
 const msdk_disp_char * defaultDLLName[2] = {"libmfxhw64_d.so",
                                             "libmfxsw64_d.so"};
 const msdk_disp_char * defaultAudioDLLName[2] = {"libmfxaudiosw64_d.so",
