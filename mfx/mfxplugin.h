@@ -123,14 +123,14 @@ typedef struct _mfxENCInput mfxENCInput;
 typedef struct _mfxENCOutput mfxENCOutput;
 typedef struct mfxVideoCodecPlugin{
     mfxStatus (MFX_CDECL *Query)(mfxHDL pthis, mfxVideoParam *in, mfxVideoParam *out);
-    mfxStatus (MFX_CDECL *QueryIOSurf)(mfxHDL pthis, mfxVideoParam *par, mfxFrameAllocRequest *in, mfxFrameAllocRequest *out); 
+    mfxStatus (MFX_CDECL *QueryIOSurf)(mfxHDL pthis, mfxVideoParam *par, mfxFrameAllocRequest *in, mfxFrameAllocRequest *out);
     mfxStatus (MFX_CDECL *Init)(mfxHDL pthis, mfxVideoParam *par);
     mfxStatus (MFX_CDECL *Reset)(mfxHDL pthis, mfxVideoParam *par);
     mfxStatus (MFX_CDECL *Close)(mfxHDL pthis);
     mfxStatus (MFX_CDECL *GetVideoParam)(mfxHDL pthis, mfxVideoParam *par);
 
     mfxStatus (MFX_CDECL *EncodeFrameSubmit)(mfxHDL pthis, mfxEncodeCtrl *ctrl, mfxFrameSurface1 *surface, mfxBitstream *bs, mfxThreadTask *task);
-    
+
     mfxStatus (MFX_CDECL *DecodeHeader)(mfxHDL pthis, mfxBitstream *bs, mfxVideoParam *par);
     mfxStatus (MFX_CDECL *GetPayload)(mfxHDL pthis, mfxU64 *ts, mfxPayload *payload);
     mfxStatus (MFX_CDECL *DecodeFrameSubmit)(mfxHDL pthis, mfxBitstream *bs, mfxFrameSurface1 *surface_work, mfxFrameSurface1 **surface_out,  mfxThreadTask *task);
@@ -146,14 +146,14 @@ typedef struct mfxVideoCodecPlugin{
 
 typedef struct mfxAudioCodecPlugin{
     mfxStatus (MFX_CDECL *Query)(mfxHDL pthis, mfxAudioParam *in, mfxAudioParam *out);
-    mfxStatus (MFX_CDECL *QueryIOSize)(mfxHDL pthis, mfxAudioParam *par, mfxAudioAllocRequest *request); 
+    mfxStatus (MFX_CDECL *QueryIOSize)(mfxHDL pthis, mfxAudioParam *par, mfxAudioAllocRequest *request);
     mfxStatus (MFX_CDECL *Init)(mfxHDL pthis, mfxAudioParam *par);
     mfxStatus (MFX_CDECL *Reset)(mfxHDL pthis, mfxAudioParam *par);
     mfxStatus (MFX_CDECL *Close)(mfxHDL pthis);
     mfxStatus (MFX_CDECL *GetAudioParam)(mfxHDL pthis, mfxAudioParam *par);
 
     mfxStatus (MFX_CDECL *EncodeFrameSubmit)(mfxHDL pthis, mfxAudioFrame *aFrame, mfxBitstream *out, mfxThreadTask *task);
-    
+
     mfxStatus (MFX_CDECL *DecodeHeader)(mfxHDL pthis, mfxBitstream *bs, mfxAudioParam *par);
 //    mfxStatus (MFX_CDECL *GetPayload)(mfxHDL pthis, mfxU64 *ts, mfxPayload *payload);
     mfxStatus (MFX_CDECL *DecodeFrameSubmit)(mfxHDL pthis, mfxBitstream *in, mfxAudioFrame *out, mfxThreadTask *task);

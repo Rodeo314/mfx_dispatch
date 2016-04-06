@@ -138,7 +138,7 @@ typedef enum
 } mfxStatus;
 
 
-// Application 
+// Application
 #if defined(MFX_DISPATCHER_EXPOSED_PREFIX)
 
 #include "mfxdispatcherprefixedfunctions.h"

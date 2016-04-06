@@ -52,7 +52,7 @@ typedef struct {
 } mfxPAKInput;
 
 typedef struct {
-    mfxBitstream     *Bs; 
+    mfxBitstream     *Bs;
 
     mfxFrameSurface1 *OutSurface;
 

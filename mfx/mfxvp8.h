@@ -42,7 +42,7 @@ enum {
 
 /* CodecProfile*/
 enum {
-    MFX_PROFILE_VP8_0                       = 0+1, 
+    MFX_PROFILE_VP8_0                       = 0+1,
     MFX_PROFILE_VP8_1                       = 1+1,
     MFX_PROFILE_VP8_2                       = 2+1,
     MFX_PROFILE_VP8_3                       = 3+1,
@@ -53,7 +53,7 @@ enum {
     MFX_EXTBUFF_VP8_CODING_OPTION =   MFX_MAKEFOURCC('V','P','8','E'),
 };
 
-typedef struct { 
+typedef struct {
     mfxExtBuffer    Header;
 
     mfxU16   Version;

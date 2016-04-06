@@ -38,7 +38,7 @@ extern "C"
 #endif /* __cplusplus */
 
 
-enum 
+enum
 {
     MFX_EXTBUFF_LOOKAHEAD_CTRL  =   MFX_MAKEFOURCC('L','A','C','T'),
     MFX_EXTBUFF_LOOKAHEAD_STAT  =   MFX_MAKEFOURCC('L','A','S','T'),
@@ -54,7 +54,7 @@ typedef struct
     mfxU16  BPyramid;
 
     mfxU16  reserved1[23];
-    
+
     mfxU16  NumOutStream;
     struct  mfxStream{
         mfxU16  Width;
@@ -79,7 +79,7 @@ typedef struct
     mfxU16  reserved[23];
 
     mfxU64 EstimatedRate[52];
-}mfxLAFrameInfo; 
+}mfxLAFrameInfo;
 
 typedef struct  {
     mfxExtBuffer    Header;
@@ -89,7 +89,7 @@ typedef struct  {
     mfxU16  NumAlloc;
     mfxU16  NumStream;
     mfxU16  NumFrame;
-    mfxLAFrameInfo   *FrameStat; 
+    mfxLAFrameInfo   *FrameStat;
 
     mfxFrameSurface1 *OutSurface;
 
