@@ -31,7 +31,7 @@ File Name: mfx_plugin_hive.h
 #pragma once
 
 #include "mfx_dispatcher_defs.h"
-#include "mfx/mfxplugin.h"
+#include "mfxplugin.h"
 #include "mfx_win_reg_key.h"
 #include "mfx_vector.h"
 #include <string.h>
@@ -42,22 +42,22 @@ struct MFX_DISP_HANDLE;
 
 namespace MFX {
 
-    enum
+    enum 
     {
         MAX_PLUGIN_PATH = 4096
     };
-
+    
     enum
     {
         MAX_PLUGIN_NAME = 4096
     };
 
-    inline bool operator == (const mfxPluginUID &lhs, const mfxPluginUID & rhs)
+    inline bool operator == (const mfxPluginUID &lhs, const mfxPluginUID & rhs) 
     {
         return !memcmp(lhs.Data, rhs.Data, sizeof(mfxPluginUID));
     }
-
-    inline bool operator != (const mfxPluginUID &lhs, const mfxPluginUID & rhs)
+    
+    inline bool operator != (const mfxPluginUID &lhs, const mfxPluginUID & rhs) 
     {
         return !(lhs == rhs);
     }
@@ -65,7 +65,7 @@ namespace MFX {
     //warning C4351: new behavior: elements of array 'MFX::PluginDescriptionRecord::sName' will be default initialized
     #pragma warning (disable: 4351)
 #endif
-    class PluginDescriptionRecord :  public mfxPluginParam
+    class PluginDescriptionRecord :  public mfxPluginParam 
     {
     public:
         msdk_disp_char sPath[MAX_PLUGIN_PATH];
@@ -85,12 +85,12 @@ namespace MFX {
 
     typedef MFXVector<PluginDescriptionRecord> MFXPluginStorage;
 
-    class  MFXPluginStorageBase : public MFXPluginStorage
+    class  MFXPluginStorageBase : public MFXPluginStorage 
     {
     protected:
         mfxVersion mCurrentAPIVersion;
     protected:
-        MFXPluginStorageBase(mfxVersion currentAPIVersion)
+        MFXPluginStorageBase(mfxVersion currentAPIVersion) 
             : mCurrentAPIVersion(currentAPIVersion)
         {
         }

@@ -1,6 +1,6 @@
 /* ****************************************************************************** *\
 
-Copyright (C) 2012-2014 Intel Corporation.  All rights reserved.
+Copyright (C) 2012-2015 Intel Corporation.  All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
@@ -35,6 +35,7 @@ File Name: mfx_dispatcher.cpp
 #include <string.h>
 #if defined(_WIN32) || defined(_WIN64)
     #include <windows.h>
+    #pragma warning(disable:4355)
 #else
 
 #include <dlfcn.h>
@@ -58,12 +59,6 @@ MFX_DISP_HANDLE::MFX_DISP_HANDLE(const mfxVersion requiredVersion) :
 
     memset(callTable, 0, sizeof(callTable));
     memset(callAudioTable, 0, sizeof(callAudioTable));
-
-#ifdef MFX_HAVE_LINUX
-    internal_hwctx = NULL;
-    tried_internal_hwctx = 0;;
-    got_user_hwctx = 0;
-#endif
 
 } // MFX_DISP_HANDLE::MFX_DISP_HANDLE(const mfxVersion requiredVersion)
 
@@ -152,7 +147,7 @@ mfxStatus MFX_DISP_HANDLE::LoadSelectedDLL(const msdk_disp_char *pPath, eMfxImpl
         DISPATCHER_LOG_BLOCK(("invoking LoadLibrary(%S)\n", MSDK2WIDE(pPath)));
         // load the DLL into the memory
         hModule = MFX::mfx_dll_load(pPath);
-
+        
         if (hModule)
         {
             int i;
@@ -241,22 +236,13 @@ mfxStatus MFX_DISP_HANDLE::LoadSelectedDLL(const msdk_disp_char *pPath, eMfxImpl
         mfxVersion version(apiVersion);
 
         /* check whether it is audio session or video */
-        bool callOldInit = true; // if true call eMFXInit, if false - eMFXInitEx
-        mfxFunctionPointer pFunc;
+        mfxFunctionPointer *actualTable = (impl & MFX_IMPL_AUDIO) ? callAudioTable : callTable;
 
-        if (par.ExternalThreads) callOldInit = false;
-        else if (par.NumExtParam) callOldInit = false;
-
+        // Call old-style MFXInit init for older libraries and audio library
+        bool callOldInit = (impl & MFX_IMPL_AUDIO) || !actualTable[eMFXInitEx]; // if true call eMFXInit, if false - eMFXInitEx
         int tableIndex = (callOldInit) ? eMFXInit : eMFXInitEx;
 
-        if (impl & MFX_IMPL_AUDIO)
-        {
-            pFunc = callAudioTable[tableIndex];
-        }
-        else
-        {
-            pFunc = callTable[tableIndex];
-        }
+        mfxFunctionPointer pFunc = actualTable[tableIndex];
 
         {
             if (callOldInit)
@@ -292,8 +278,8 @@ mfxStatus MFX_DISP_HANDLE::LoadSelectedDLL(const msdk_disp_char *pPath, eMfxImpl
         }
         else
         {
-            mfxRes = DISPATCHER_EXPOSED_PREFIX(MFXQueryVersion)((mfxSession) this, &actualApiVersion);
-
+            mfxRes = MFXQueryVersion((mfxSession) this, &actualApiVersion);
+            
             if (MFX_ERR_NONE != mfxRes)
             {
                 DISPATCHER_LOG_ERROR((("MFXQueryVersion returned: %d, skiped this library\n"), mfxRes))
@@ -315,7 +301,7 @@ mfxStatus MFX_DISP_HANDLE::LoadSelectedDLL(const msdk_disp_char *pPath, eMfxImpl
 
 mfxStatus MFX_DISP_HANDLE::UnLoadSelectedDLL(void)
 {
-    mfxStatus mfxRes = MFX_ERR_NOT_INITIALIZED;
+    mfxStatus mfxRes = MFX_ERR_NONE;
 
     //unregistered plugins if any
     pluginFactory.Close();
@@ -324,12 +310,12 @@ mfxStatus MFX_DISP_HANDLE::UnLoadSelectedDLL(void)
     if (session)
     {
         /* check whether it is audio session or video */
-        int tableIndex = eMFXClose;
+        int tableIndex = eMFXClose; 
         mfxFunctionPointer pFunc;
-        if (impl & MFX_IMPL_AUDIO)
-        {
+        if (impl & MFX_IMPL_AUDIO) 
+        { 
             pFunc = callAudioTable[tableIndex];
-        }
+        } 
         else
         {
             pFunc = callTable[tableIndex];

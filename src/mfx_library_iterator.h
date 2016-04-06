@@ -32,7 +32,7 @@ File Name: mfx_library_iterator.h
 #define __MFX_LIBRARY_ITERATOR_H
 
 
-#include "mfx/mfxvideo.h"
+#include <mfxvideo.h>
 #include "mfx_win_reg_key.h"
 #include "mfx_dispatcher.h"
 
@@ -103,11 +103,11 @@ public:
     mfxStatus Init(eMfxImplType implType, mfxIMPL implInterface, const mfxU32 adapterNum, int storageID);
 
     // Get the next library path
-    mfxStatus SelectDLLVersion(msdk_disp_char *pPath, size_t pathSize,
+    mfxStatus SelectDLLVersion(msdk_disp_char *pPath, size_t pathSize, 
                                eMfxImplType *pImplType, mfxVersion minVersion);
 
     // Return interface type on which Intel adapter was found (if any): D3D9 or D3D11
-    mfxIMPL GetImplementationType();
+    mfxIMPL GetImplementationType(); 
 
     // Retrun registry subkey name on which dll was selected after sucesfull call to selectDllVesion
     bool GetSubKeyName(msdk_disp_char *subKeyName, size_t length) const;
@@ -124,17 +124,17 @@ protected:
     mfxStatus InitFolder(eMfxImplType implType, mfxIMPL implInterface, const mfxU32 adapterNum, const msdk_disp_char * path);
 
 
-    eMfxImplType m_implType;                                    // Required library implementation
+    eMfxImplType m_implType;                                    // Required library implementation 
     mfxIMPL m_implInterface;                                    // Required interface (D3D9, D3D11)
 
     mfxU32 m_vendorID;                                          // (mfxU32) property of used graphic card
     mfxU32 m_deviceID;                                          // (mfxU32) property of used graphic card
     bool   m_bIsSubKeyValid;
-    wchar_t m_SubKeyName[MFX_MAX_REGISTRY_KEY_NAME];            // registry subkey for selected module loaded
+    wchar_t m_SubKeyName[MFX_MAX_REGISTRY_KEY_NAME];            // registry subkey for selected module loaded 
     int    m_StorageID;
-
+    
 #if defined(_WIN32) || defined(_WIN64)
-    WinRegKey m_baseRegKey;                                     // (WinRegKey) main registry key
+    WinRegKey m_baseRegKey;                                     // (WinRegKey) main registry key    
 
     mfxU32 m_lastLibIndex;                                      // (mfxU32) index of previously returned library
     mfxU32 m_lastLibMerit;                                      // (mfxU32) merit of previously returned library

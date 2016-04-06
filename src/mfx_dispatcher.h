@@ -1,6 +1,6 @@
 /* ****************************************************************************** *\
 
-Copyright (C) 2012-2014 Intel Corporation.  All rights reserved.
+Copyright (C) 2012-2015 Intel Corporation.  All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
@@ -31,17 +31,17 @@ File Name: mfx_dispatcher.h
 #if !defined(__MFX_DISPATCHER_H)
 #define __MFX_DISPATCHER_H
 
-#include "mfx/mfxvideo.h"
-#include "mfx/mfxaudio.h"
-#include "mfx/mfxplugin.h"
+#include <mfxvideo.h>
+#include <mfxaudio.h>
+#include <mfxplugin.h>
 #include <stddef.h>
 #include "mfx_dispatcher_defs.h"
 #include "mfx_load_plugin.h"
-#include "mfx/mfxenc.h"
-#include "mfx/mfxpak.h"
+#include "mfxenc.h"
+#include "mfxpak.h"
 
 
-mfxStatus DISPATCHER_EXPOSED_PREFIX(MFXQueryVersion)(mfxSession session, mfxVersion *version);
+mfxStatus MFXQueryVersion(mfxSession session, mfxVersion *version);
 
 enum
 {
@@ -71,7 +71,6 @@ enum eFunc
     eMFXSetPriority,
     eMFXGetPriority,
     eMFXInitEx,
-    eMFXVideoCORE_SetHandle,
 #include "mfx_exposed_functions_list.h"
     eVideoFuncTotal
 };
@@ -164,17 +163,10 @@ struct MFX_DISP_HANDLE
     mfxFunctionPointer callTable[eVideoFuncTotal];
     mfxFunctionPointer callAudioTable[eAudioFuncTotal];
 
-#ifdef MFX_HAVE_LINUX
-    // internal VAAPI context
-    void *internal_hwctx;
-    int   tried_internal_hwctx;
-    int   got_user_hwctx;
-#endif
-
 private:
     // Declare assignment operator and copy constructor to prevent occasional assignment
     MFX_DISP_HANDLE(const MFX_DISP_HANDLE &);
-    MFX_DISP_HANDLE & operator = (const MFX_DISP_HANDLE &);
+    MFX_DISP_HANDLE & operator = (const MFX_DISP_HANDLE &);    
 
 };
 

@@ -29,9 +29,8 @@ File Name: mfx_dispatcher_defs.h
 \* ****************************************************************************** */
 
 #pragma once
-#include "mfx/mfxdefs.h"
+#include "mfxdefs.h"
 #include <cstring>
-#include <cstdio>
 
 #if defined(MFX_DISPATCHER_LOG)
 #include <string>
@@ -69,19 +68,18 @@ inline std::wstring getWideString(const char * string)
     return std::wstring(string, string + len);
 }
 #else
-    #define MSDK2WIDE(x) x
+    #define MSDK2WIDE(x) x  
 #endif
 
 #endif
+
+#ifdef __GNUC__
+#define  sscanf_s  sscanf
+#define  swscanf_s swscanf
+#endif
+
 
 // declare library module's handle
 typedef void * mfxModuleHandle;
 
 typedef void (MFX_CDECL * mfxFunctionPointer)(void);
-
-
-#if !defined (MFX_DISPATCHER_EXPOSED_PREFIX)
-#define DISPATCHER_EXPOSED_PREFIX(fnc) fnc
-#else
-#define DISPATCHER_EXPOSED_PREFIX(fnc) _##fnc
-#endif
