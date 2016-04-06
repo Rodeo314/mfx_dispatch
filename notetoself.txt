@@ -1,0 +1,5 @@
+cosmetics: Drop whitespace
+
+41c4f197eba15369f0365ba8bd2f48e9967ceccf
+
+No, it murders the diffs with upstream.
