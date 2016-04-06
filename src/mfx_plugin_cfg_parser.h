@@ -32,7 +32,7 @@ File Name: mfx_plugin_cfg_parser.h
 #define __MFX_PLUGIN_CFG_PARSER_H
 
 #include "mfx_dispatcher_defs.h"
-#include "mfx/mfxplugin.h"
+#include "mfxplugin.h"
 #include "mfx_vector.h"
 #include "mfx_plugin_hive.h"
 #include <string.h>
@@ -47,7 +47,7 @@ namespace MFX
     {
     public:
 
-        enum
+        enum 
         {
             PARSED_TYPE        = 1,
             PARSED_CODEC_ID    = 2,
