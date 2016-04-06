@@ -951,6 +951,9 @@ static void init_internal_hwctx(mfxSession session)
 { \
     /* get the real session pointer */ \
     session = pHandle->session; \
+#ifdef MFX_HAVE_LINUX \
+    pHandle->got_user_hwctx = 1; \
+#endif \
     /* pass down the call */ \
     mfxRes = (*(mfxStatus (MFX_CDECL  *) formal_param_list) pFunc) actual_param_list; \
 } \
