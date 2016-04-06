@@ -34,6 +34,12 @@ File Name: main.cpp
 #include "mfx_library_iterator.h"
 #include "mfx_critical_section.h"
 
+#ifdef MFX_HAVE_LINUX
+extern "C" {
+#include "mfx_va_glue.h"
+}
+#endif
+
 #include <string.h> /* for memset on Linux */
 #include <memory>
 #include <stdlib.h> /* for qsort on Linux */
@@ -521,6 +527,9 @@ mfxStatus MFXClose(mfxSession session)
             // can't unload library in that case.
             if (MFX_ERR_UNDEFINED_BEHAVIOR != mfxRes)
             {
+#ifdef MFX_HAVE_LINUX
+                mfx_deallocate_va(pHandle->internal_hwctx);
+#endif
                 // release the handle
                 delete pHandle;
             }
@@ -892,6 +901,20 @@ FUNCTION(mfxStatus, MFXSetPriority, (mfxSession session, mfxPriority priority), 
 FUNCTION(mfxStatus, MFXGetPriority, (mfxSession session, mfxPriority *priority), (session, priority))
 
 #undef FUNCTION
+
+static void init_internal_hwctx(mfxSession session)
+{
+#ifdef MFX_HAVE_LINUX
+    MFX_DISP_HANDLE *pHandle = (MFX_DISP_HANDLE *) session;
+    if (!pHandle->got_user_hwctx && !pHandle->tried_internal_hwctx) {
+        void *handle = mfx_allocate_va(session);
+        if (handle)
+            pHandle->internal_hwctx = handle;
+        pHandle->tried_internal_hwctx = 1;
+    }
+#endif
+}
+
 #define FUNCTION(return_value, func_name, formal_param_list, actual_param_list) \
     return_value func_name formal_param_list \
 { \
@@ -901,6 +924,7 @@ FUNCTION(mfxStatus, MFXGetPriority, (mfxSession session, mfxPriority *priority),
     if (pHandle) \
 { \
     mfxFunctionPointer pFunc = pHandle->callTable[e##func_name]; \
+    init_internal_hwctx(session); \
     if (pFunc) \
 { \
     /* get the real session pointer */ \

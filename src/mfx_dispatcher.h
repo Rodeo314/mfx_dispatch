@@ -163,6 +163,13 @@ struct MFX_DISP_HANDLE
     mfxFunctionPointer callTable[eVideoFuncTotal];
     mfxFunctionPointer callAudioTable[eAudioFuncTotal];
 
+#ifdef MFX_HAVE_LINUX
+    // internal VAAPI context
+    void *internal_hwctx;
+    int   tried_internal_hwctx;
+    int   got_user_hwctx;
+#endif
+
 private:
     // Declare assignment operator and copy constructor to prevent occasional assignment
     MFX_DISP_HANDLE(const MFX_DISP_HANDLE &);
