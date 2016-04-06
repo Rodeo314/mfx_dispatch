@@ -383,10 +383,9 @@ mfxStatus MFXLibraryIterator::SelectDLLVersion(char *pPath, size_t pathSize,
 
 mfxIMPL MFXLibraryIterator::GetImplementationType()
 {
-    if (m_selected_adapter < 0 || m_selected_adapter >= m_adapters_num)
-        return MFX_ERR_UNSUPPORTED;
-
-    return MFX_IMPL_VIA_VAAPI;
+    mfxIMPL implInterface;
+    MFX::SelectImplementationType(0, &implInterface, NULL, NULL);
+    return implInterface;
 }
 
 bool MFXLibraryIterator::GetSubKeyName(msdk_disp_char *subKeyName, size_t length) const
